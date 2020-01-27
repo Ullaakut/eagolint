@@ -17,7 +17,7 @@ func isGenerated(src []byte) bool {
 	sc := bufio.NewScanner(bytes.NewReader(src))
 	for sc.Scan() {
 		b := sc.Bytes()
-		if bytes.HasPrefix(b, genHdr) && bytes.HasSuffix(b, genFtr) && len(b) >= len(genHdr)+len(genFtr) {
+		if bytes.HasPrefix(b, genHdr) && bytes.Contains(b, genFtr) {
 			return true
 		}
 	}
