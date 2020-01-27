@@ -101,7 +101,7 @@ file:31: double space typo in comment
 
 func TestProcessFile(t *testing.T) {
 	b := &bytes.Buffer{}
-	err := eagolint.ProcessFile(b, "eagolint_test.go",  nil)
+	err := eagolint.ProcessFile(b, "eagolint_test.go", nil)
 	if err != nil {
 		t.Errorf("Expected %v, got %s", nil, err)
 	}

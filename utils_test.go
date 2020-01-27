@@ -1,8 +1,8 @@
 package eagolint
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestIsGenerated(t *testing.T) {
@@ -11,7 +11,7 @@ func TestIsGenerated(t *testing.T) {
 	nonGeneratedFileContents := []byte("// This is not generated code.")
 	tests := []struct {
 		fileContents []byte
-		want    bool
+		want         bool
 	}{
 		{generatedFileContents, true},
 		{generatedFileContentsGoBinData, true},

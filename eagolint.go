@@ -1,15 +1,15 @@
 package eagolint
 
 import (
-	"path/filepath"
-	"strings"
-	"io/ioutil"
-	"net/http"
-	"regexp"
-	"os"
+	"bufio"
 	"fmt"
 	"io"
-	"bufio"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"path/filepath"
+	"regexp"
+	"strings"
 )
 
 // ShouldSkip checks a path and determines if it should be skipped.
@@ -66,7 +66,7 @@ func ProcessFile(w io.Writer, path string, exclude *regexp.Regexp) error {
 	defer func() {
 		err := f.Close()
 		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr,"Error closing file: %s\n", err)
+			_, _ = fmt.Fprintf(os.Stderr, "Error closing file: %s\n", err)
 		}
 	}()
 

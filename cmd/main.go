@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
+	"bufio"
+	"github.com/Ullaakut/eagolint"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"regexp"
-	"bufio"
 	"path/filepath"
-	"github.com/Ullaakut/eagolint"
+	"regexp"
 )
 
 var args struct {
@@ -25,7 +25,7 @@ var args struct {
 var cmd = &cobra.Command{
 	Use:   "eagolint",
 	Short: "Eagolint is a go linter that keeps your comments punctuated and double-space free.",
-	Long: `A go linter that checks for comments with missing punctuation and double spaces.`,
+	Long:  `A go linter that checks for comments with missing punctuation and double spaces.`,
 	Run: func(cmd *cobra.Command, input []string) {
 		args.GoOnly = viper.GetBool("go-only")
 		args.SkipTests = viper.GetBool("skip-tests")
