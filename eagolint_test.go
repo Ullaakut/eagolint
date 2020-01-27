@@ -109,11 +109,13 @@ func TestProcessFile(t *testing.T) {
 
 func TestProcessExclude(t *testing.T) {
 	lines := `	// TODO: fix
-				// FIXME: do something 
+				// FIXME: do something
 				// This is a non-excluded  comment with issues`
 	b := &bytes.Buffer{}
 	exclude := regexp.MustCompile("TODO|FIXME")
-	expected := "file:3: double space typo in comment\n"
+	expected := `file:3: missing punctuation at end of comment
+file:3: double space typo in comment
+`
 	_ = eagolint.Process(bytes.NewBufferString(lines), b, "file", exclude)
 	if b.String() != expected {
 		t.Errorf("Expected %s, got %s", expected, b.String())

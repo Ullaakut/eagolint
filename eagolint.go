@@ -73,45 +73,84 @@ func ProcessFile(w io.Writer, path string, exclude *regexp.Regexp) error {
 	return Process(f, w, path, exclude)
 }
 
+type line struct {
+	pos int
+	text string
+}
+
 // Process checks all lines in the reader and writes an error if the line length
 // is greater than MaxLength.
 func Process(r io.Reader, w io.Writer, path string, exclude *regexp.Regexp) error {
-	l := 0
+	var pos int
 	s := bufio.NewScanner(r)
 
-	var (
-		// prevIsComment is used to track whether the previous line is a comment,
-		// in order to detect multi-line comment blocks.
-		prevIsComment bool
-
-		// punctuated stores whether the last comment line found was punctuated.
-		// if a comment ends without punctuation, a warning is printed.
-		punctuated bool
-	)
+	var comments []line
 	for s.Scan() {
-		l++
-		line := strings.TrimSpace(s.Text())
-		isComment := strings.HasPrefix(line, "//")
+		pos++
+		text := strings.TrimSpace(s.Text())
 
+		isComment := strings.HasPrefix(text, "//")
 		if !isComment {
-			if prevIsComment && !punctuated {
-				// Previous line was a comment and it ended on this line.
-				// If punctuated is false, then a warning is printed for the
-				// previous line.
-				_, _ = fmt.Fprintf(w, "%s:%d: missing punctuation at end of comment\n", path, l-1)
-			}
-
-			prevIsComment = false
 			continue
 		}
 
-		if strings.Contains(line, "  ") {
-			_, _ = fmt.Fprintf(w, "%s:%d: double space typo in comment\n", path, l)
-		}
-
-		punctuated = isPunctuated(line)
-		prevIsComment = true
+		comments = append(comments, line{
+			pos: pos,
+			text: text,
+		})
 	}
 
+	processComments(w, comments, path)
+
 	return s.Err()
+}
+
+// processComments processes all comments from a file.
+func processComments(w io.Writer, c []line, path string) {
+	// First, split the map of all comment lines into clusters.
+	// (1 cluster = 1 multiline/inline comment)
+	var (
+		clusters [][]line
+		currentCluster []line
+		prev = -1
+	)
+	for _, l := range c {
+		// This is a new cluster, so we append the previous cluster to the list
+		// of comment clusters.
+		if l.pos != prev+1 {
+			clusters = append(clusters, currentCluster)
+			currentCluster = []line{}
+		}
+
+		currentCluster = append(currentCluster, l)
+		prev = l.pos
+	}
+
+	if len(currentCluster) > 0 {
+		clusters = append(clusters, currentCluster)
+	}
+
+	// Process each comment cluster individually.
+	for _, cluster := range clusters {
+		processComment(w, cluster, path)
+	}
+}
+
+// processComment processes an inline comment or multiline comment block.
+func processComment(w io.Writer, comment []line, path string) {
+	// Iterate on each time that is part of the comment.
+	for idx, line := range comment {
+		// If this is the last line of the comment and it's missing punctuation,
+		// print a warning.
+		if idx+1 == len(comment) {
+			if !isPunctuated(line.text) {
+				_, _ = fmt.Fprintf(w, "%s:%d: missing punctuation at end of comment\n", path, line.pos)
+			}
+		}
+
+		// If the line contains a double space, print a warning.
+		if strings.Contains(line.text, "  ") {
+			_, _ = fmt.Fprintf(w, "%s:%d: double space typo in comment\n", path, line.pos)
+		}
+	}
 }

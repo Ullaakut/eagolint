@@ -34,3 +34,5 @@ package test_assets
 // and the check should be done differently. This is not supported
 // for now so this comment should trigger an error.
 // عربى!
+
+			// This comment is indented.
