@@ -5,14 +5,14 @@
 </p>
 
 <p align="center">
-    <a href="http://img.shields.io/badge/godoc-reference-blue.svg?style=flat">
-        <img src="https://godoc.org/github.com/Ullaakut/eagolint"/>
+    <a href="https://godoc.org/github.com/Ullaakut/eagolint">
+        <img src="http://img.shields.io/badge/godoc-reference-blue.svg?style=flat"/>
     </a>
-    <a href="http://img.shields.io/badge/license-MIT-red.svg?style=flat">
-        <img src="https://raw.githubusercontent.com/Ullaakut/eagolint/master/LICENSE"/>
+    <a href="https://raw.githubusercontent.com/Ullaakut/eagolint/master/LICENSE">
+        <img src="http://img.shields.io/badge/license-MIT-red.svg?style=flat"/>
     </a>
-    <a href="https://goreportcard.com/badge/github.com/Ullaakut/eagolint">
-        <img src="https://goreportcard.com/report/Ullaakut/eagolint"/>
+    <a href="https://goreportcard.com/report/Ullaakut/eagolint">
+        <img src="https://goreportcard.com/badge/github.com/Ullaakut/eagolint"/>
     </a>
 </p>
 
