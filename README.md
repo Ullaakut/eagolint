@@ -1,6 +1,10 @@
 # Eagolint
 
 <p align="center">
+    <img width="250" src="img/logo.png">
+</p>
+
+<p align="center">
     <a href="http://img.shields.io/badge/godoc-reference-blue.svg?style=flat">
         <img src="https://godoc.org/github.com/Ullaakut/eagolint"/>
     </a>
