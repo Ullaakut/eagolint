@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/hamba/slices"
 )
 
 // ShouldSkip checks a path and determines if it should be skipped.
@@ -19,7 +21,7 @@ import (
 // Otherwise, checks that file is readable text file.
 func ShouldSkip(path string, isDir bool, skipList []string, goOnly bool, skipTests bool) (bool, error) {
 	name := filepath.Base(path)
-	if contains(skipList, name) {
+	if slices.Contains(skipList, name) {
 		if isDir {
 			return true, filepath.SkipDir
 		}

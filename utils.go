@@ -24,16 +24,6 @@ func isGenerated(src []byte) bool {
 	return false
 }
 
-// contains returns whether the given string slice contains the given string.
-func contains(slice []string, str string) bool {
-	for _, sliceElem := range slice {
-		if str == sliceElem {
-			return true
-		}
-	}
-	return false
-}
-
 // Punctuated returns whether a line ends with punctuation or a
 // closing parentheses/bracket.
 func isPunctuated(line string) bool {
